@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public abstract class Funcionario extends Usuario {
 
-    private static final ArrayList<Venda> vendas = new ArrayList<Venda>();
+    private ArrayList<Venda> vendas = new ArrayList<Venda>();
 
     private float salario;
 
 
-    public Funcionario(String nome, String cpf, float salario) {
-        super(nome, cpf);
+    public Funcionario(String nome, String cpf, String senha, float salario) {
+        super(nome, cpf, senha);
         this.salario = salario;
     }
 
@@ -22,7 +22,7 @@ public abstract class Funcionario extends Usuario {
 
     public static Cliente procurarCliente(String cpf) {
         for (Usuario cliente : usuarios) {
-            if (cliente.cpf == cpf) {
+            if (cliente instanceof Cliente && cliente.getCpf().equals(cpf)) {
                 return (Cliente) cliente;
             }
         }
