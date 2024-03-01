@@ -4,11 +4,18 @@ import Concessionaria.Veiculos.Veiculo;
 
 public class Gerente extends Funcionario {
 
-    public Gerente(String nome, String cpf, float salario) {
-        super(nome, cpf, salario);
+    public Gerente(String nome, String cpf,String senha, float salario) {
+        super(nome, cpf, senha,salario);
     }
 
-    public static void venderVeiculo(String codigoVeiculo, String cpf) {
+    public void venderVeiculo(String codigoVeiculo, String cpf) {
+        for (Veiculo veiculo : veiculos) {
+
+        }
+    }
+
+    @Override
+    protected void verPagamento(int pagamento) {
 
     }
 

@@ -1,5 +1,7 @@
 package Concessionaria.Veiculos;
 
+import Concessionaria.Usuarios.Usuario;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +31,23 @@ public abstract class Veiculo {
 
     public static void addVeiculo(Veiculo veiculo) {
         veiculos.add(veiculo);
+    }
+
+    public static Veiculo getVeiculo(String codigo) {
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.getCodigo().equals(codigo)) {
+                return veiculo;
+            }
+        }
+        return null;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public static List<Veiculo> getVeiculos() {
+        
     }
 
     public static void remVeiculo(String codigo) {

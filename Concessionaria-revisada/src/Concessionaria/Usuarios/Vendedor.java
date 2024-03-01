@@ -2,17 +2,26 @@ package Concessionaria.Usuarios;
 
 public class Vendedor extends Funcionario {
 
-    public Vendedor(String nome, String cpf, float salario) {
-        super(nome, cpf, salario);
+    public Vendedor(String nome, String cpf, String senha,  float salario) {
+        super(nome, cpf, senha, salario);
     }
 
-    public static void venderVeiculo(String codigoVeiculo, String cpf) {
-        if (codigoVeiculo == codigoVeiculo) {
-            System.out.println("Vendido");
-        }
+    @Override
+    public void venderVeiculo(String codigoVeiculo, String cpfCliente) {
+
     }
 
-    public static float verPagamento(float pagamento) {
-        return pagamento;
+    @Override
+    public void verPagamento(int pagamento) {
+
+    }
+
+    public String toString() {
+        return "Funcionario{" +
+                "cpf='" + getCpf() + '\'' +
+                ", nome='" + getNome() + '\'' +
+                ", senha='" + getSenha() + '\'' +
+                ", salario= '" + salario + '\'' +
+                '}';
     }
 }

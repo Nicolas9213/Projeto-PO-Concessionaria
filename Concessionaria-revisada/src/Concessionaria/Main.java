@@ -10,7 +10,7 @@ public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
 
-    private static final Usuario gerente = new Gerente("Nicolas", "123.123.123-12", 10000);
+    private static final Usuario gerente = new Gerente("Nicolas", "123.123.123-12", "123", 10000);
 
     private static Usuario usuarioLogado;
 
