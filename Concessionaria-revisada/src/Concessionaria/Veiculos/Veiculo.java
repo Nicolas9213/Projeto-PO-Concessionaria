@@ -47,7 +47,7 @@ public abstract class Veiculo {
     }
 
     public static List<Veiculo> getVeiculos() {
-        
+
     }
 
     public static void remVeiculo(String codigo) {
