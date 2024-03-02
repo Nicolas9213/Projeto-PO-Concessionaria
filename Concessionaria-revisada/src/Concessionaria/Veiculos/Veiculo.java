@@ -20,6 +20,18 @@ public abstract class Veiculo {
     private int ano;
     private float preco;
 
+    public Veiculo(String marca, String placa, String codigo, boolean novo, String status, int quilometragem,
+                   String modelo, int ano, float preco) {
+        this.marca = marca;
+        this.placa = placa;
+        this.codigo = codigo;
+        this.novo = novo;
+        this.status = status;
+        this.quilometragem = quilometragem;
+        this.modelo = modelo;
+        this.ano = ano;
+    }
+
     public static Veiculo verVeiculo(String codigo) {
         for (Veiculo veiculo : veiculos) {
             if (veiculo.codigo == codigo) {
@@ -46,8 +58,8 @@ public abstract class Veiculo {
         return codigo;
     }
 
-    public static List<Veiculo> getVeiculos() {
-
+    public float getPreco() {
+        return preco;
     }
 
     public static void remVeiculo(String codigo) {
@@ -63,8 +75,24 @@ public abstract class Veiculo {
         this.preco = preco;
     }
 
-    public static List<Veiculo> verVeiculos() { // Método poderia ser getVeiculos()
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public static List<Veiculo> getVeiculos() {
         return Collections.unmodifiableList(veiculos);
     }
 
+    public String toString() {
+        return "Veiculo{" +
+                "marca='" + marca + '\'' +
+                ", placa='" + placa + '\'' +
+                ", codigo='" + codigo + '\'' +
+                ", novo='" + novo + '\'' +
+                ", status='" + status + '\'' +
+                ", quilometragem='" + quilometragem + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", ano='" + ano + '\'' +
+                '}';
+    }
 }
