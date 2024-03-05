@@ -54,6 +54,10 @@ public abstract class Veiculo {
         return null;
     }
 
+    public static List<Veiculo> getVeiculos() {
+        return Collections.unmodifiableList(veiculos);
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -77,10 +81,6 @@ public abstract class Veiculo {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public static List<Veiculo> getVeiculos() {
-        return Collections.unmodifiableList(veiculos);
     }
 
     public String toString() {
