@@ -2,6 +2,8 @@ package Concessionaria.Usuarios;
 
 import Concessionaria.Veiculos.Veiculo;
 
+import java.util.List;
+
 public class Gerente extends Funcionario {
 
     public Gerente(String nome, String cpf,String senha, float salario) {
@@ -9,9 +11,7 @@ public class Gerente extends Funcionario {
     }
 
     public void venderVeiculo(String codigoVeiculo, String cpf) {
-        for (Veiculo veiculo : veiculos) {
 
-        }
     }
 
     @Override
@@ -59,8 +59,8 @@ public class Gerente extends Funcionario {
             Usuario.addUsuario(usuario);
         }
     }
-
-    public String verMeusVeiculos() {
-        return Veiculo.verVeiculos().toString();
-    }
+    /**
+    public List<Veiculo> verMeusVeiculos() {
+        return Veiculo.getVeiculos().toString();
+    }**/
 }

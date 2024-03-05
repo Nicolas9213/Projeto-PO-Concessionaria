@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class Veiculo {
 
-    private static final ArrayList<Veiculo> veiculos = new ArrayList<>();
+    public static final ArrayList<Veiculo> veiculos = new ArrayList<>();
 
     private String marca;
     private String placa;
@@ -84,7 +84,7 @@ public abstract class Veiculo {
     }
 
     public String toString() {
-        return "Veiculo{" +
+        return "Veiculo:" +
                 "marca='" + marca + '\'' +
                 ", placa='" + placa + '\'' +
                 ", codigo='" + codigo + '\'' +
@@ -94,5 +94,9 @@ public abstract class Veiculo {
                 ", modelo='" + modelo + '\'' +
                 ", ano='" + ano + '\'' +
                 '}';
+    }
+
+    public String getInformacoesEstoque() {
+        return this.codigo + ":" + this.marca + ":" + this.modelo + ":" + this.ano;
     }
 }
