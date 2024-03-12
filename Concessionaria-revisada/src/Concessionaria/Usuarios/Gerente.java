@@ -1,6 +1,7 @@
 package Concessionaria.Usuarios;
 
 import Concessionaria.Veiculos.Veiculo;
+import Concessionaria.Venda;
 
 import java.util.List;
 
@@ -15,12 +16,21 @@ public class Gerente extends Funcionario {
     }
 
     @Override
-    protected void verPagamento(int pagamento) {
+    public float verPagamento() {
+        float comissao = 0;
 
+        for (Venda venda : vendas) {
+            Veiculo veiculo = Veiculo.getVeiculo(venda.getCodigo());
+
+            if (veiculo != null) {
+                comissao += veiculo.getPreco() * 0.02;
+            }
+        }
+        return (comissao + this.salario);
     }
 
-    public static void remVeiculo(String codigo) {
-        Veiculo.remVeiculo(codigo);
+    public static void remVeiculo(Veiculo veiculo) {
+        remVeiculo(veiculo);
     }
 
     public static void cadastrarVeiculo(Veiculo veiculo) {
@@ -32,8 +42,8 @@ public class Gerente extends Funcionario {
         veiculo.setPreco(novoPreco);
     }
 
-    public static void editarVeiculo(String codigo, Veiculo novoVeiculo) {
-
+    public static void editarVeiculo(Veiculo novoVeiculo) {
+        Veiculo.editarVeiculo(novoVeiculo);
     }
 
     public static void editarUsuario(String cpf, Usuario usuario) {

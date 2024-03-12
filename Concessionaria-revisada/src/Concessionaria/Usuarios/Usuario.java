@@ -21,8 +21,8 @@ public abstract class Usuario {
         this.senha = senha;
     }
 
-    protected void addVeiculos(Veiculo veiculo) {
-        Veiculo.addVeiculo(veiculo);
+    public void addVeiculo(Veiculo veiculo) {
+        meusVeiculos.add(veiculo);
     }
 
     protected List<Veiculo> verMeusVeiculos() {

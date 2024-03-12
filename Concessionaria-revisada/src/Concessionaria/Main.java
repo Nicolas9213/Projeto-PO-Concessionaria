@@ -93,7 +93,7 @@ public class Main {
             if (usuarioLogado instanceof Funcionario) {
                 switch (escolha) {
                     case 6 -> venderUmVeiculo();
-                    case 7 -> procurarCliente();
+                    case 7 -> exibirCliente();
                     case 8 -> verPagamento();
                 }
 
@@ -107,8 +107,8 @@ public class Main {
                         case 14 -> editarUsuario();
                         case 15 -> verVendedores();
                         case 16 -> verClientes();
-                        case 17 -> verPagamentosDosVendedores();
-                        case 18 -> verPagamentoDeUmVendedor();
+                        case 17 -> verPagamentosVendedores();
+                        case 18 -> verPagamentoVendedor();
                     }
                 }
             }
@@ -117,11 +117,11 @@ public class Main {
 
     }
 
-    private static void verPagamentoDeUmVendedor() {
+    private static void verPagamentoVendedor() {
 
     }
 
-    private static void verPagamentosDosVendedores() {
+    private static void verPagamentosVendedores() {
 
     }
 
@@ -142,15 +142,82 @@ public class Main {
     }
 
     private static void editarVeiculo() {
+        Veiculo novoVeiculo = menuCadastroVeiculo();
 
     }
 
     private static void removerVeiculo() {
-
+        Veiculo veiculo = procurarVeiculo();
+        remVeiculo(veiculo);
     }
 
     private static void cadastrarVeiculo() {
+        Veiculo veiculoGenerico = menuCadastroVeiculo();
 
+        if (veiculoGenerico != null) {
+            Veiculo.addVeiculo(veiculoGenerico);
+            System.out.println("O veiculo foi cadastrado com sucesso!");
+        }else {
+            System.out.println("Não foi possivel cadastrar o veiculo!");
+        }
+    }
+
+    private static Veiculo menuCadastroVeiculo() {
+        System.out.println("Digite o tipo de veículo que deseja cadastrar: ");
+        System.out.println("""
+                1- Carro
+                2- Moto
+                3- Caminhão
+                """);
+        int tipoVeiculo = sc.nextInt();
+
+        System.out.println("Informe a marca do veículo:");
+        String marca = sc.nextLine();
+
+        System.out.println("Informe o modelo do veículo:");
+        String modelo = sc.nextLine();
+
+        System.out.println("Informe a placa do veículo:");
+        String placa = sc.nextLine();
+
+        System.out.println("Informe o código do veículo:");
+        String codigo = sc.nextLine();
+
+        System.out.println("O veículo é novo? (true/false):");
+        boolean novo = sc.nextBoolean();
+
+        System.out.println("Informe o status do veículo: (Disponivel/Vendido)");
+        String status = sc.nextLine();
+
+        System.out.println("Informe a quilometragem do veículo:");
+        int quilometragem = sc.nextInt();
+
+        System.out.println("Informe o ano do veículo:");
+        int ano = sc.nextInt();
+
+        System.out.println("Informe o preço do veículo:");
+        float preco = sc.nextFloat();
+
+        Veiculo veiculoGenerico = null;
+
+        switch (tipoVeiculo) {
+            case 1:
+                veiculoGenerico = new Carro(marca, placa, codigo, novo, status, quilometragem, modelo, ano, preco);
+                break;
+            case 2:
+                veiculoGenerico = new Moto(marca, placa, codigo, novo, status, quilometragem, modelo, ano, preco);
+            case 3:
+                System.out.println("Digite o peso máximo do veículo: ");
+                float pesoMaximo = sc.nextFloat();
+
+                System.out.println("Digite o comprimento do veículo: ");
+                int comprimento = sc.nextInt();
+
+                System.out.println("Digite a quantidade de rodas do veículo: ");
+                int qntdRodas = sc.nextInt();
+                veiculoGenerico = new Caminhao(marca, placa, codigo, novo, status, quilometragem, modelo, ano, preco, pesoMaximo, comprimento, qntdRodas);
+        }
+        return veiculoGenerico;
     }
 
     private static void editarUsuario() {
@@ -158,15 +225,48 @@ public class Main {
     }
 
     private static void verPagamento() {
-
+        System.out.println("Pagamento: " + ((Funcionario) usuarioLogado).verPagamento());
     }
 
-    private static void procurarCliente() {
+    private static void exibirCliente() {
+        Usuario cliente = procurarCliente();
+        System.out.println(cliente.toString());
+    }
 
+    private static Usuario procurarCliente() {
+        System.out.println("Insira o CPF do cliente: ");
+        String cpf = sc.next();
+        Usuario cliente = Usuario.getUsuario(cpf);
+        if (!(cliente instanceof Cliente)) {
+            System.out.println("Cliente não consta na base de dados");
+        }
+        return cliente;
+    }
+
+    private static Veiculo procurarVeiculo() {
+        System.out.println("Digite o código do veículo: ");
+        String codigo = sc.next();
+        Veiculo veiculo = getVeiculo(codigo);
+        if (veiculo == null) {
+            System.out.println("Veículo não existe");
+        }
+        return veiculo;
     }
 
     private static void venderUmVeiculo() {
+        Veiculo veiculo = procurarVeiculo();
+        Usuario cliente = procurarCliente();
 
+        if (veiculo.isVendido()) {
+            System.out.println("O veículo não está disponível");
+        }
+
+        Venda venda = new Venda(usuarioLogado.getCpf(), cliente, veiculo);
+
+        ((Funcionario) usuarioLogado).addVenda(venda);
+        veiculo.setStatus(false);
+        cliente.addVeiculo(veiculo);
+        System.out.println("Venda efetuada!");
     }
 
     private static void verMeusVeiculos() {
@@ -177,19 +277,11 @@ public class Main {
         usuarioLogado = null;
     }
 
-
     private static void verUmVeiculo() {
-        System.out.println("Digite o código do veículo: ");
-        String codigo = sc.next();
+        Veiculo veiculo = procurarVeiculo();
 
-        Veiculo veiculo = getVeiculo(codigo);
-
-        if (veiculo != null) {
-            System.out.println("Detalhes do veículo: ");
-            System.out.println(veiculo.toString());
-        } else {
-            System.out.println("Veículo não encontrado");
-        }
+        System.out.println("Detalhes do veículo: ");
+        System.out.println(veiculo.toString());
     }
 
     private static void verEstoque() {

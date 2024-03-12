@@ -14,13 +14,13 @@ public abstract class Veiculo {
     private String placa;
     private String codigo;
     private boolean novo;
-    private String status;
+    private boolean status;
     private int quilometragem;
     private String modelo;
     private int ano;
     private float preco;
 
-    public Veiculo(String marca, String placa, String codigo, boolean novo, String status, int quilometragem,
+    public Veiculo(String marca, String placa, String codigo, boolean novo, boolean status, int quilometragem,
                    String modelo, int ano, float preco) {
         this.marca = marca;
         this.placa = placa;
@@ -58,6 +58,10 @@ public abstract class Veiculo {
         return Collections.unmodifiableList(veiculos);
     }
 
+    public static void editarVeiculo(Veiculo novoVeiculo) {
+        Veiculo.editarVeiculo(novoVeiculo);
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -66,20 +70,19 @@ public abstract class Veiculo {
         return preco;
     }
 
-    public static void remVeiculo(String codigo) {
-        for (Veiculo veiculo : veiculos) {
-            if (veiculo.codigo == codigo) {
-                veiculos.remove(veiculo);
-                return;
-            }
-        }
+    public static void remVeiculo(Veiculo veiculo) {
+        veiculos.remove(veiculo);
+    }
+
+    public boolean isVendido() {
+        return status;
     }
 
     public void setPreco(float preco) {
         this.preco = preco;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

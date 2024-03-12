@@ -28,11 +28,11 @@ public abstract class Funcionario extends Usuario {
         return null;
     }
 
-    protected static void addVenda(Venda venda) {
+    public static void addVenda(Venda venda) {
         vendas.add(venda);
     }
 
-    protected abstract void verPagamento(int pagamento);
+    public abstract float verPagamento();
 
     public String toString() {
         return "Funcionario{" +

@@ -1,5 +1,8 @@
 package Concessionaria.Usuarios;
 
+import Concessionaria.Veiculos.Veiculo;
+import Concessionaria.Venda;
+
 public class Vendedor extends Funcionario {
 
     public Vendedor(String nome, String cpf, String senha,  float salario) {
@@ -12,8 +15,17 @@ public class Vendedor extends Funcionario {
     }
 
     @Override
-    public void verPagamento(int pagamento) {
+    public float verPagamento() {
+        float comissao = 0;
 
+        for (Venda venda : vendas) {
+            Veiculo veiculo = Veiculo.getVeiculo(venda.getCodigo());
+
+            if (veiculo != null) {
+                comissao += veiculo.getPreco() * 0.01;
+            }
+        }
+        return (comissao + this.salario);
     }
 
     public String toString() {
