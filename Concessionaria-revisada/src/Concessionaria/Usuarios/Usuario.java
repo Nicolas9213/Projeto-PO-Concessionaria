@@ -66,13 +66,16 @@ public abstract class Usuario {
         usuarios.add(usuario);
     }
 
-    public static Usuario login(String cpf, String senha) {
+    public static Usuario login(String cpf, String senha) throws UsuarioException, SenhaIncorretaException {
         for (Usuario usuario : usuarios) {
-            if (usuario.getCpf().equals(cpf) && usuario.getSenha().equals(senha)) {
-                return usuario;
+            if (usuario.getCpf().equals(cpf)) {
+                if (usuario.getSenha().equals(senha)) {
+                    return usuario;
+                }
+                throw new SenhaIncorretaException();
             }
         }
-        return null;
+        throw new UsuarioException();
     }
 
     public String toString() {

@@ -16,13 +16,13 @@ public class Main {
     private static final Usuario cliente = new Cliente("Ramon", "1234", "234", "345");
 
     private static final Veiculo veiculo1 = new Carro("Nissan", "121", "1212", true,
-            "disponivel", 0, "Gtr R35", 2023, 780000);
+            true, 0, "Gtr R35", 2023, 780000);
 
     private static final Veiculo veiculo2 = new Carro("Toyota", "122", "1221", true,
-            "disponivel", 0, "Mk5", 2023, 880000);
+            true, 0, "Mk5", 2023, 880000);
 
     private static final Veiculo veiculo3 = new Carro("Mazda", "121", "122", false,
-            "disponivel", 250000, "Rx-7", 1997, 980000);
+            true, 250000, "Rx-7", 1997, 980000);
 
     private static Usuario usuarioLogado;
 
@@ -202,10 +202,10 @@ public class Main {
 
         switch (tipoVeiculo) {
             case 1:
-                veiculoGenerico = new Carro(marca, placa, codigo, novo, status, quilometragem, modelo, ano, preco);
+                veiculoGenerico = new Carro(marca, placa, codigo, novo, true, quilometragem, modelo, ano, preco);
                 break;
             case 2:
-                veiculoGenerico = new Moto(marca, placa, codigo, novo, status, quilometragem, modelo, ano, preco);
+                veiculoGenerico = new Moto(marca, placa, codigo, novo, true, quilometragem, modelo, ano, preco);
             case 3:
                 System.out.println("Digite o peso máximo do veículo: ");
                 float pesoMaximo = sc.nextFloat();
@@ -215,7 +215,7 @@ public class Main {
 
                 System.out.println("Digite a quantidade de rodas do veículo: ");
                 int qntdRodas = sc.nextInt();
-                veiculoGenerico = new Caminhao(marca, placa, codigo, novo, status, quilometragem, modelo, ano, preco, pesoMaximo, comprimento, qntdRodas);
+                veiculoGenerico = new Caminhao(marca, placa, codigo, novo, true, quilometragem, modelo, ano, preco, pesoMaximo, comprimento, qntdRodas);
         }
         return veiculoGenerico;
     }
@@ -295,8 +295,12 @@ public class Main {
         String cpf = sc.next();
         System.out.println("Digite a senha: ");
         String senha = sc.next();
+        try {
+            usuarioLogado = Usuario.login(cpf, senha);
 
-        usuarioLogado = Usuario.login(cpf, senha);
+        } catch (Exception exception) {
+            System.err.println(exception.getMessage());
+        }
     }
 
 
