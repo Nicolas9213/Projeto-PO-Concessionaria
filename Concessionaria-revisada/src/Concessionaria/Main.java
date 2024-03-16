@@ -234,8 +234,7 @@ public class Main {
     }
 
     private static Usuario procurarCliente() {
-        System.out.println("Insira o CPF do cliente: ");
-        String cpf = sc.next();
+        String cpf = pedirCpf();
         Usuario cliente = Usuario.getUsuario(cpf);
         if (!(cliente instanceof Cliente)) {
             System.out.println("Cliente não consta na base de dados");
@@ -243,9 +242,33 @@ public class Main {
         return cliente;
     }
 
-    private static Veiculo procurarVeiculo() {
+    private static String pedirCpf() {
+        System.out.println("Insira o CPF do cliente: ");
+        return sc.next();
+    }
+
+    private static String pedirCodigo() {
         System.out.println("Digite o código do veículo: ");
-        String codigo = sc.next();
+        return sc.next();
+    }
+
+    private static String pedirNome() {
+        System.out.println("Digite o nome: ");
+        return sc.next();
+    }
+
+    private static String pedirSenha() {
+        System.out.println("Digite a senha: ");
+        return sc.next();
+    }
+
+    private static String pedirCnh() {
+        System.out.println("Digite a cnh: ");
+        return sc.next();
+    }
+
+    private static Veiculo procurarVeiculo() {
+        String codigo = pedirCodigo();
         Veiculo veiculo = getVeiculo(codigo);
         if (veiculo == null) {
             System.out.println("Veículo não existe");
@@ -291,10 +314,8 @@ public class Main {
     }
 
     private static void login() {
-        System.out.println("Digite o cpf: ");
-        String cpf = sc.next();
-        System.out.println("Digite a senha: ");
-        String senha = sc.next();
+        String cpf = pedirCpf();
+        String senha = pedirSenha();
         try {
             usuarioLogado = Usuario.login(cpf, senha);
 
@@ -303,16 +324,11 @@ public class Main {
         }
     }
 
-
     public static void cadastroUsuario() {
-        System.out.println("Nome: ");
-        String nome = sc.next();
-        System.out.println("Cpf: ");
-        String cpf = sc.next();
-        System.out.println("Senha: ");
-        String senha = sc.next();
-        System.out.println("Cnh: ");
-        String cnh = sc.next();
+        String nome = pedirNome();
+        String cpf = pedirCpf();
+        String senha = pedirSenha();
+        String cnh = pedirCnh();
 
         Usuario usuario = new Cliente(nome, cpf, senha, cnh);
         Usuario.addUsuario(usuario);
