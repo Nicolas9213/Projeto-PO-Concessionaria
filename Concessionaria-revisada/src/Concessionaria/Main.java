@@ -118,7 +118,19 @@ public class Main {
     }
 
     private static void verPagamentoVendedor() {
+        String cpf = pedirCpf();
+        Usuario vendedor = Usuario.getUsuario(cpf);
 
+        if (vendedor == null) {
+            System.out.println("Vendedor não encontrado!");
+            return;
+        }
+        if (!(vendedor instanceof Vendedor)) {
+            System.out.println("Usuário não é um vendedor!");
+            return;
+        }
+
+        System.out.println(((Gerente) usuarioLogado).verPagamentoUmVendedor(cpf));
     }
 
     private static void verPagamentosVendedores() {
@@ -144,6 +156,16 @@ public class Main {
     private static void editarVeiculo() {
         Veiculo novoVeiculo = menuCadastroVeiculo();
 
+        if(novoVeiculo != null) {
+            if (Veiculo.getVeiculo(novoVeiculo.getCodigo()) == null) {
+                System.out.println("Veículo não encontrado!");
+                return;
+            }
+            ((Gerente) usuarioLogado).editarVeiculo(novoVeiculo);
+            System.out.println("Veículo editado!");
+        } else {
+            System.out.println("Veículo não existe!");
+        }
     }
 
     private static void removerVeiculo() {
