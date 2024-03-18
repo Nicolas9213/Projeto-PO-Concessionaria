@@ -1,5 +1,7 @@
 package Concessionaria.Veiculos;
 
+import Concessionaria.Exceptions.VeiculoExistenteException;
+import Concessionaria.Exceptions.VeiculoNaoEncontradoException;
 import Concessionaria.Usuarios.Usuario;
 
 import java.util.ArrayList;
@@ -41,17 +43,22 @@ public abstract class Veiculo {
         return null;
     }
 
-    public static void addVeiculo(Veiculo veiculo) {
-        veiculos.add(veiculo);
+    public static void addVeiculo(Veiculo veiculoGenerico) throws VeiculoExistenteException {
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.getCodigo() != veiculoGenerico.getCodigo()) {
+                veiculos.add(veiculoGenerico);
+            }
+            throw new VeiculoExistenteException();
+        }
     }
 
-    public static Veiculo getVeiculo(String codigo) {
+    public static Veiculo getVeiculo(String codigo) throws VeiculoNaoEncontradoException {
         for (Veiculo veiculo : veiculos) {
             if (veiculo.getCodigo().equals(codigo)) {
                 return veiculo;
             }
         }
-        return null;
+        throw new VeiculoNaoEncontradoException(codigo);
     }
 
     public static List<Veiculo> getVeiculos() {

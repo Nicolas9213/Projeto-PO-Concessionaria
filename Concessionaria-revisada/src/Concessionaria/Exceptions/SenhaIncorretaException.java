@@ -1,4 +1,4 @@
-package Concessionaria.Usuarios;
+package Concessionaria.Exceptions;
 
 public class SenhaIncorretaException extends Exception {
     public SenhaIncorretaException() {

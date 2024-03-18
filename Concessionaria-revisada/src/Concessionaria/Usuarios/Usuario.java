@@ -1,5 +1,7 @@
 package Concessionaria.Usuarios;
 
+import Concessionaria.Exceptions.SenhaIncorretaException;
+import Concessionaria.Exceptions.UsuarioNaoEncontradoException;
 import Concessionaria.Veiculos.Veiculo;
 
 import java.util.ArrayList;
@@ -66,7 +68,7 @@ public abstract class Usuario {
         usuarios.add(usuario);
     }
 
-    public static Usuario login(String cpf, String senha) throws UsuarioException, SenhaIncorretaException {
+    public static Usuario login(String cpf, String senha) throws UsuarioNaoEncontradoException, SenhaIncorretaException {
         for (Usuario usuario : usuarios) {
             if (usuario.getCpf().equals(cpf)) {
                 if (usuario.getSenha().equals(senha)) {
@@ -75,7 +77,7 @@ public abstract class Usuario {
                 throw new SenhaIncorretaException();
             }
         }
-        throw new UsuarioException();
+        throw new UsuarioNaoEncontradoException(cpf);
     }
 
     public String toString() {

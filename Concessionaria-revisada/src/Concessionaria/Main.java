@@ -1,5 +1,9 @@
 package Concessionaria;
 
+import Concessionaria.Exceptions.SenhaIncorretaException;
+import Concessionaria.Exceptions.UsuarioNaoEncontradoException;
+import Concessionaria.Exceptions.VeiculoExistenteException;
+import Concessionaria.Exceptions.VeiculoNaoEncontradoException;
 import Concessionaria.Usuarios.*;
 import Concessionaria.Veiculos.*;
 
@@ -12,22 +16,19 @@ public class Main {
     private static final Scanner sc = new Scanner(System.in);
 
     private static final Usuario gerente = new Gerente("Nicolas", "12", "123", 10000);
-
+    private static final Usuario funcionario = new Vendedor("Vendedor da Silva", "1", "13", 100);
     private static final Usuario cliente = new Cliente("Ramon", "1234", "234", "345");
-
     private static final Veiculo veiculo1 = new Carro("Nissan", "121", "1212", true,
             true, 0, "Gtr R35", 2023, 780000);
-
     private static final Veiculo veiculo2 = new Carro("Toyota", "122", "1221", true,
             true, 0, "Mk5", 2023, 880000);
-
     private static final Veiculo veiculo3 = new Carro("Mazda", "121", "122", false,
             true, 250000, "Rx-7", 1997, 980000);
-
     private static Usuario usuarioLogado;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws VeiculoNaoEncontradoException, VeiculoExistenteException {
         Usuario.addUsuario(gerente);
+        Usuario.addUsuario(funcionario);
         Usuario.addUsuario(cliente);
         Veiculo.addVeiculo(veiculo1);
         Veiculo.addVeiculo(veiculo2);
@@ -39,7 +40,7 @@ public class Main {
         } while (true);
     }
 
-    public static void menuPrincipal() {
+    public static void menuPrincipal() throws VeiculoNaoEncontradoException {
         System.out.println("""
                 1 - Login
                 2 - Cadastro
@@ -154,18 +155,17 @@ public class Main {
     }
 
     private static void editarVeiculo() {
-        Veiculo novoVeiculo = menuCadastroVeiculo();
-
-        if(novoVeiculo != null) {
-            if (Veiculo.getVeiculo(novoVeiculo.getCodigo()) == null) {
-                System.out.println("Veículo não encontrado!");
-                return;
+        Veiculo veiculoAntigo = procurarVeiculo();
+        if (veiculoAntigo != null) {
+            Veiculo novoVeiculo = menuCadastroVeiculo();
+            if (novoVeiculo != null) {
+                ((Gerente) usuarioLogado).editarVeiculo(veiculoAntigo, novoVeiculo);
+                System.out.println("Veículo editado com sucesso!");
+            } else {
+                System.out.println("Operação cancelada. Não foi fornecido um novo veículo.");
             }
-            ((Gerente) usuarioLogado).editarVeiculo(novoVeiculo);
-            System.out.println("Veículo editado!");
-        } else {
-            System.out.println("Veículo não existe!");
         }
+
     }
 
     private static void removerVeiculo() {
@@ -174,16 +174,47 @@ public class Main {
     }
 
     private static void cadastrarVeiculo() {
-        Veiculo veiculoGenerico = menuCadastroVeiculo();
-
-        if (veiculoGenerico != null) {
-            Veiculo.addVeiculo(veiculoGenerico);
+        Veiculo veiculo = menuCadastroVeiculo();
+        try {
+            Veiculo.addVeiculo(veiculo);
             System.out.println("O veiculo foi cadastrado com sucesso!");
-        }else {
-            System.out.println("Não foi possivel cadastrar o veiculo!");
+        } catch (VeiculoExistenteException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
+    private static String pedirMarcaVeiculo() {
+        System.out.println("Informe a marca do veículo:");
+        return sc.next();
+    }
+    private static String pedirPlacaVeiculo() {
+        System.out.println("Informe a placa: ");
+        return sc.next();
+    }
+    private static String pedirModeloVeiculo() {
+        System.out.println("Informe o modelo do veículo: ");
+        return sc.next();
+    }
+    private static String pedirEstadoVeiculo() {
+        System.out.println("Informe o estado do veículo(novo/usado): ");
+        return sc.next();
+    }
+    private static Boolean pedirStatusVeiculo() {
+        System.out.println("Informe o status do veículo(Disponivel/Vendido):");
+        return sc.nextBoolean();
+    }
+    private static int pedirQuilometragemVeiculo() {
+        System.out.println("Informe a quilometragem do veículo:");
+        return sc.nextInt();
+    }
+    private static int pedirAnoVeiculo() {
+        System.out.println("Informe o ano do veículo: ");
+        return sc.nextInt();
+    }
+    private static float pedirPrecoVeiculo() {
+        System.out.println("Digite o preço do veículo: ");
+        return sc.nextFloat();
+    }
     private static Veiculo menuCadastroVeiculo() {
         System.out.println("Digite o tipo de veículo que deseja cadastrar: ");
         System.out.println("""
@@ -193,41 +224,24 @@ public class Main {
                 """);
         int tipoVeiculo = sc.nextInt();
 
-        System.out.println("Informe a marca do veículo:");
-        String marca = sc.nextLine();
-
-        System.out.println("Informe o modelo do veículo:");
-        String modelo = sc.nextLine();
-
-        System.out.println("Informe a placa do veículo:");
-        String placa = sc.nextLine();
-
-        System.out.println("Informe o código do veículo:");
-        String codigo = sc.nextLine();
-
-        System.out.println("O veículo é novo? (true/false):");
-        boolean novo = sc.nextBoolean();
-
-        System.out.println("Informe o status do veículo: (Disponivel/Vendido)");
-        String status = sc.nextLine();
-
-        System.out.println("Informe a quilometragem do veículo:");
-        int quilometragem = sc.nextInt();
-
-        System.out.println("Informe o ano do veículo:");
-        int ano = sc.nextInt();
-
-        System.out.println("Informe o preço do veículo:");
-        float preco = sc.nextFloat();
+        String marca = pedirMarcaVeiculo();
+        String placa = pedirPlacaVeiculo();
+        String codigo = pedirCodigo();
+        String estadoVeiculo = pedirEstadoVeiculo();
+        boolean status = pedirStatusVeiculo();
+        int quilometragem = pedirQuilometragemVeiculo();
+        String modelo = pedirModeloVeiculo();
+        int ano = pedirAnoVeiculo();
+        float preco = pedirPrecoVeiculo();
 
         Veiculo veiculoGenerico = null;
 
         switch (tipoVeiculo) {
             case 1:
-                veiculoGenerico = new Carro(marca, placa, codigo, novo, true, quilometragem, modelo, ano, preco);
+                veiculoGenerico = new Carro(marca, placa, codigo, estadoVeiculo, true, quilometragem, modelo, ano, preco);
                 break;
             case 2:
-                veiculoGenerico = new Moto(marca, placa, codigo, novo, true, quilometragem, modelo, ano, preco);
+                veiculoGenerico = new Moto(marca, placa, codigo, estadoVeiculo, true, quilometragem, modelo, ano, preco);
             case 3:
                 System.out.println("Digite o peso máximo do veículo: ");
                 float pesoMaximo = sc.nextFloat();
@@ -237,7 +251,7 @@ public class Main {
 
                 System.out.println("Digite a quantidade de rodas do veículo: ");
                 int qntdRodas = sc.nextInt();
-                veiculoGenerico = new Caminhao(marca, placa, codigo, novo, true, quilometragem, modelo, ano, preco, pesoMaximo, comprimento, qntdRodas);
+                veiculoGenerico = new Caminhao(marca, placa, codigo, estadoVeiculo, true, quilometragem, modelo, ano, preco, pesoMaximo, comprimento, qntdRodas);
         }
         return veiculoGenerico;
     }
@@ -246,7 +260,7 @@ public class Main {
 
     }
 
-    private static void verPagamento() {
+    private static void verPagamento() throws VeiculoNaoEncontradoException {
         System.out.println("Pagamento: " + ((Funcionario) usuarioLogado).verPagamento());
     }
 
@@ -265,7 +279,7 @@ public class Main {
     }
 
     private static String pedirCpf() {
-        System.out.println("Insira o CPF do cliente: ");
+        System.out.println("Insira o CPF: ");
         return sc.next();
     }
 
@@ -291,9 +305,11 @@ public class Main {
 
     private static Veiculo procurarVeiculo() {
         String codigo = pedirCodigo();
-        Veiculo veiculo = getVeiculo(codigo);
-        if (veiculo == null) {
-            System.out.println("Veículo não existe");
+        Veiculo veiculo = null;
+        try {
+            veiculo = getVeiculo(codigo);
+        } catch (VeiculoNaoEncontradoException exception) {
+            System.out.println(exception.getMessage());
         }
         return veiculo;
     }
@@ -340,9 +356,19 @@ public class Main {
         String senha = pedirSenha();
         try {
             usuarioLogado = Usuario.login(cpf, senha);
-
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
+        } catch (UsuarioNaoEncontradoException exception) {
+            System.out.println(exception.getMessage());
+            System.out.println("""
+                    Deseja realizar o cadastro?
+                    1- Sim;
+                    Outro - Não.
+                    """);
+            int escolha = sc.nextInt();
+            if (escolha == 1) {
+                cadastroUsuario();
+            }
+        } catch (SenhaIncorretaException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 

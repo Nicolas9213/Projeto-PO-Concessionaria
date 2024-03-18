@@ -1,5 +1,6 @@
 package Concessionaria.Usuarios;
 
+import Concessionaria.Exceptions.VeiculoNaoEncontradoException;
 import Concessionaria.Veiculos.Veiculo;
 import Concessionaria.Venda;
 
@@ -32,7 +33,7 @@ public abstract class Funcionario extends Usuario {
         vendas.add(venda);
     }
 
-    public abstract float verPagamento();
+    public abstract float verPagamento() throws VeiculoNaoEncontradoException;
 
     public String toString() {
         return "Funcionario{" +

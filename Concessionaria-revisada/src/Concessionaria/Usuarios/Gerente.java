@@ -1,5 +1,7 @@
 package Concessionaria.Usuarios;
 
+import Concessionaria.Exceptions.VeiculoExistenteException;
+import Concessionaria.Exceptions.VeiculoNaoEncontradoException;
 import Concessionaria.Veiculos.Veiculo;
 import Concessionaria.Venda;
 
@@ -16,7 +18,7 @@ public class Gerente extends Funcionario {
     }
 
     @Override
-    public float verPagamento() {
+    public float verPagamento() throws VeiculoNaoEncontradoException {
         float comissao = 0;
 
         for (Venda venda : vendas) {
@@ -33,7 +35,7 @@ public class Gerente extends Funcionario {
         remVeiculo(veiculo);
     }
 
-    public static void cadastrarVeiculo(Veiculo veiculo) {
+    public static void cadastrarVeiculo(Veiculo veiculo) throws VeiculoExistenteException {
         Veiculo.addVeiculo(veiculo);
     }
 
@@ -42,7 +44,7 @@ public class Gerente extends Funcionario {
         veiculo.setPreco(novoPreco);
     }
 
-    public static void editarVeiculo(Veiculo novoVeiculo) {
+    public static void editarVeiculo(Veiculo veiculoAntigo, Veiculo novoVeiculo) {
         Veiculo.editarVeiculo(novoVeiculo);
     }
 

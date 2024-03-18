@@ -1,5 +1,6 @@
 package Concessionaria.Usuarios;
 
+import Concessionaria.Exceptions.VeiculoNaoEncontradoException;
 import Concessionaria.Veiculos.Veiculo;
 import Concessionaria.Venda;
 
@@ -15,7 +16,7 @@ public class Vendedor extends Funcionario {
     }
 
     @Override
-    public float verPagamento() {
+    public float verPagamento() throws VeiculoNaoEncontradoException {
         float comissao = 0;
 
         for (Venda venda : vendas) {
